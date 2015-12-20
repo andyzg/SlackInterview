@@ -51,7 +51,7 @@
         };
         xmlHttp.open('GET', requestUrl, true);
         xmlHttp.send(null);
-    }
+    };
 
     var Photo = function(photo) {
         this.smallImageUrl = photo['url_s'];
@@ -61,24 +61,28 @@
 
     Photo.prototype.getSmallImageUrl = function() {
         return this.smallImageUrl;
-    }
+    };
 
     Photo.prototype.getLargeImageUrl = function() {
         return this.largeImageUrl;
-    }
+    };
 
     Photo.prototype.getId = function() {
         return this.id;
-    }
+    };
 
     var FlickrImagesView = function() {
         this.photoList = [];
         this.currentPhotoIndex = null;
     };
 
+    FlickrImagesView.KEY_CODE_ESC = 27;
+    FlickrImagesView.KEY_CODE_LEFT = 37;
+    FlickrImagesView.KEY_CODE_RIGHT = 39;
+
     FlickrImagesView.prototype.renderError = function() {
         alert('There was an error loading the response.');
-    }
+    };
 
     FlickrImagesView.prototype.renderImages = function(photos) {
         var rootListElement = $('#photo-list')[0];
@@ -86,30 +90,69 @@
             return new Photo(p);
         });
         for (var i = 0; i < this.photoList.length; i++) {
-            // Use a factory to create photo DOM elements, then add it 
+            // Use a factory to create photo DOM elements, then add it
             // to the DOM.
-            var photoElement = this.createPhotoElement(this.photoList[i]);
+            var photoElement = FlickrImagesView.createPhotoElement(this.photoList[i]);
             this.setupOnclick(photoElement, i);
             rootListElement.appendChild(photoElement);
         }
-    }
+    };
 
     FlickrImagesView.prototype.setupOnclick = function(element, i) {
         element.onclick = function() {
             this.currentPhotoIndex = i;
             this.renderFocusedView(this.currentPhotoIndex);
         }.bind(this);
-    }
+    };
 
     FlickrImagesView.prototype.renderFocusedView = function(currentPhotoIndex) {
-        $('#photo-focus').item(0).src = this.photoList[currentPhotoIndex].getLargeImageUrl();
         $('#photo-viewer').item(0).style.display = 'block';
-        document.addEventListener('mousewheel', function(e) {
-            e.preventDefault();
-        });
+        this.setupEventListeners();
+        this.setupFocusedImage(this.photoList[currentPhotoIndex].getLargeImageUrl());
+    };
+
+    FlickrImagesView.prototype.setupFocusedImage = function(imgUrl) {
+        $('#photo-focus').item(0).src = imgUrl;
     }
 
-    FlickrImagesView.prototype.createPhotoElement = function(photo) {
+    FlickrImagesView.disableScrollEvent = function(e) {
+        e.preventDefault();
+    };
+
+    FlickrImagesView.prototype.setupEventListeners = function() {
+        document.addEventListener('mousewheel', FlickrImagesView.disableScrollEvent);
+        window.onkeydown = function(e) {
+            var code = e.keyCode ? e.keyCode : e.which;
+            switch (code) {
+                case FlickrImagesView.KEY_CODE_ESC:
+                    this.exitFocusedView();
+                    break;
+                case FlickrImagesView.KEY_CODE_LEFT:
+                    this.focusNextImage();
+                    break;
+                case FlickrImagesView.KEY_CODE_RIGHT:
+                    this.focusPreviousImage();
+                    break;
+                default:
+                    break;
+            }
+        }.bind(this);
+    }
+    FlickrImagesView.prototype.focusNextImage = function() {
+        console.log('Next image');
+    };
+    FlickrImagesView.prototype.focusPreviousImage = function() {
+        console.log('Previous image');
+    };
+
+    FlickrImagesView.prototype.exitFocusedView = function() {
+        this.currentPhotoIndex = null;
+        document.removeEventListener('mousewheel', FlickrImagesView.disableScrollEvent);
+        window.onkeydown = null;
+        $('#photo-viewer').item(0).style.display = 'none';
+    };
+
+    FlickrImagesView.createPhotoElement = function(photo) {
         var rootDiv = document.createElement('div');
         rootDiv.style['background-image'] = 'url(' + photo.getSmallImageUrl() + ')';
         rootDiv.className = 'photo-thumbnail';
@@ -119,6 +162,8 @@
         rootDiv.appendChild(overlay);
         return rootDiv;
     }
+
+    FlickrImagesView.prototype
 
 
     document.addEventListener('DOMContentLoaded', function() {
