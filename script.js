@@ -54,6 +54,30 @@ var FlickrAPI = function() {
 
 var FlickrImagesView = function() {
 
+    var Photo = function(photo) {
+        var smallImageUrl = photo['url_s'];
+        var largeImageUrl = photo['url_l'];
+        var id = photo['id'];
+
+        function getSmallImageUrl() {
+            return smallImageUrl;
+        }
+
+        function getLargeImageUrl() {
+            return largeImageUrl;
+        }
+
+        function getId() {
+            return id;
+        }
+
+        return {
+            getId: getId,
+            getLargeImageUrl: getLargeImageUrl,
+            getSmallImageUrl: getSmallImageUrl
+        };
+    };
+
     // Utility functions
     function $(selector) {
         return document.querySelectorAll(selector);
@@ -69,13 +93,18 @@ var FlickrImagesView = function() {
         for (var i = 0; i < photos.length; i++) {
             // Use a factory to create photo DOM elements, then add it 
             // to the DOM.
-            var photoElement = createPhotoElement(photos[i]);
+            var photoElement = createPhotoElement(new Photo(photos[i]));
             rootListElement.appendChild(photoElement);
         }
     }
 
-    function createPhotoElement(photoData) {
-        return document.createTextNode('a');
+    function createPhotoElement(photo) {
+        var rootDiv = document.createElement('div');
+        var image = document.createElement('img');
+        image.src = photo.getSmallImageUrl();
+        image.className = 'photo-thumbnail';
+        rootDiv.appendChild(image);
+        return rootDiv;
     }
 
     // Interface
