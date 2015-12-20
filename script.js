@@ -117,6 +117,9 @@
         function renderFocusedView(currentPhotoIndex) {
             $('#photo-focus').item(0).src = photoList[currentPhotoIndex].getLargeImageUrl();
             $('#photo-viewer').item(0).style.display = 'block';
+            document.addEventListener('mousewheel', function(e) {
+                e.preventDefault();
+            });
         }
 
         function createPhotoElement(photo) {
