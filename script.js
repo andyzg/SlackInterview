@@ -112,7 +112,6 @@
     };
 
     FlickrImagesView.prototype.renderFocusedView = function(currentPhotoIndex) {
-        debugger;
         $('#photo-viewer').item(0).style.display = 'block';
         this.setupFocusedImage(this.photoList[currentPhotoIndex].getLargeImageUrl());
     };
@@ -164,8 +163,11 @@
             this.focusNextImage();
         }.bind(this);
         window.onclick = function(e) {
-            if (e.target.id !== 'photo-focus') {
-                debugger;
+            var id = e.target.id;
+            // Ensures didn't click any image, or icon
+            if (id !== 'photo-focus' && id !== 'left-icon' &&
+               id != 'right-icon' && id !== 'close-icon' && 
+               e.target.tagName !== 'IMG') {
                 this.exitFocusedView();
             }
         }.bind(this);
@@ -178,7 +180,6 @@
 
     FlickrImagesView.prototype.focusPreviousImage = function() {
         this.currentPhotoIndex--;
-        debugger;
         this.setupFocusedImage(this.photoList[this.currentPhotoIndex].getLargeImageUrl());
     };
 
@@ -192,7 +193,9 @@
 
     FlickrImagesView.createPhotoElement = function(photo) {
         var rootDiv = document.createElement('div');
-        rootDiv.style['background-image'] = 'url(' + photo.getSmallImageUrl() + ')';
+        console.log(rootDiv);
+        rootDiv.style['background'] = 'url(' + photo.getSmallImageUrl() + ') no-repeat center center';
+        console.log(rootDiv);
         rootDiv.className = 'photo-thumbnail';
 
         var overlay = document.createElement('div');
