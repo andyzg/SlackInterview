@@ -43,10 +43,8 @@
                 if (parsedData['stat'] === 'ok') {
                     cb(parsedData['photos']['photo']);
                 } else {
-                    error(); // TODO: Add error message
+                    error('Invalid request to the Flickr API.');
                 }
-            } else {
-                // TODO: Handle error
             }
         };
         xmlHttp.open('GET', requestUrl, true);
@@ -95,8 +93,8 @@
     FlickrImagesView.KEY_CODE_LEFT = 37;
     FlickrImagesView.KEY_CODE_RIGHT = 39;
 
-    FlickrImagesView.prototype.renderError = function() {
-        alert('There was an error loading the response.');
+    FlickrImagesView.prototype.renderError = function(errorMessage) {
+        alert(errorMessage);
     };
 
     FlickrImagesView.prototype.renderImages = function(photos) {
@@ -143,7 +141,7 @@
         } else {
             $('#right-icon').item(0).style.display = 'block';
         }
-    }
+    };
 
     FlickrImagesView.disableScrollEvent = function(e) {
         e.preventDefault();
@@ -213,7 +211,7 @@
         overlay.className = 'photo-overlay';
         rootDiv.appendChild(overlay);
         return rootDiv;
-    }
+    };
 
     document.addEventListener('DOMContentLoaded', function() {
         var photoView = new FlickrImagesView();
