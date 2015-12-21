@@ -48,13 +48,6 @@ body {
 #photo-viewer {
     display: none;
 }
- 
-#photo-focus {
-    left:50%;
-    position: fixed;
-    top:50%;
-    transform: translate(-50%,-50%);
-}
 
 #photo-focus-overlay {
     background-color: rgba(0, 0, 0, 0.8);
@@ -65,10 +58,33 @@ body {
     bottom: 0;
 }
 
+#photo-focus-container {
+    left: 50%;
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
 #photo-focus {
-    height: auto;
-    max-height: 80%;
+    height: 500px;
     width: auto;
+}
+
+#photo-footer {
+    background-color: rgba(0, 0, 0, 0.5);
+    bottom: -40px;
+    height: 30px;
+    padding-top: 10px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+
+}
+
+#photo-title {
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
 }
 
 .icon {

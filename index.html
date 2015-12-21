@@ -6,6 +6,7 @@
         <title>Slack - Photos</title>
         <link rel="stylesheet" type="text/css" href="style.css">
         <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
         <link rel="apple-touch-icon" sizes="57x57" href="favicons/apple-touch-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="60x60" href="favicons/apple-touch-icon-60x60.png">
         <link rel="apple-touch-icon" sizes="72x72" href="favicons/apple-touch-icon-72x72.png">
@@ -36,7 +37,12 @@
         </div>
         <div id="photo-viewer">
             <div id="photo-focus-overlay"></div>
-            <img id="photo-focus" />
+            <div id="photo-focus-container">
+                <img id="photo-focus" />
+                <div id="photo-footer">
+                    <span id="photo-title">Hello World</span>
+                </div>
+            </div>
             <div id="close-icon" class="icon">
                 <img src="close-icon.png" />
             </div>

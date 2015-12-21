@@ -62,6 +62,7 @@
         }
         this.largeImageUrl = photo['url_l'];
         this.id = photo['id'];
+        this.title = photo['title'];
     };
 
     Photo.HEIGHT = 150;
@@ -74,6 +75,10 @@
         return this.largeImageUrl;
     };
 
+    Photo.prototype.getTitle = function() {
+        return this.title;
+    };
+
     Photo.prototype.getId = function() {
         return this.id;
     };
@@ -81,7 +86,8 @@
     var FlickrImagesView = function() {
         this.photoList = [];
         this.currentPhotoIndex = null;
-        this.photoRootElement = $('#photo-list')[0];
+        this.photoListRootElement = $('#photo-list').item(0);
+        this.focusTitleElement = $('#photo-title').item(0);
         this.focusElement = $('#photo-focus').item(0);
     };
 
@@ -102,7 +108,7 @@
             // to the DOM.
             var photoElement = FlickrImagesView.createPhotoElement(this.photoList[i]);
             this.setupOnclick(photoElement, i);
-            this.photoRootElement.appendChild(photoElement);
+            this.photoListRootElement.appendChild(photoElement);
         }
     };
 
@@ -120,11 +126,12 @@
 
     FlickrImagesView.prototype.renderFocusedView = function(currentPhotoIndex) {
         $('#photo-viewer').item(0).style.display = 'block';
-        this.setupFocusedImage(this.photoList[currentPhotoIndex].getLargeImageUrl());
+        this.setupFocusedImage(this.photoList[currentPhotoIndex]);
     };
 
-    FlickrImagesView.prototype.setupFocusedImage = function(imgUrl) {
-        this.focusElement.src = imgUrl;
+    FlickrImagesView.prototype.setupFocusedImage = function(photo) {
+        this.focusElement.src = photo.getLargeImageUrl();
+        this.focusTitleElement.innerHTML = photo.getTitle();
         if (this.currentPhotoIndex === 0) {
             $('#left-icon').item(0).style.display = 'none';
         } else {
@@ -182,16 +189,15 @@
 
     FlickrImagesView.prototype.focusNextImage = function() {
         this.currentPhotoIndex++;
-        this.setupFocusedImage(this.photoList[this.currentPhotoIndex].getLargeImageUrl());
+        this.setupFocusedImage(this.photoList[this.currentPhotoIndex]);
     };
 
     FlickrImagesView.prototype.focusPreviousImage = function() {
         this.currentPhotoIndex--;
-        this.setupFocusedImage(this.photoList[this.currentPhotoIndex].getLargeImageUrl());
+        this.setupFocusedImage(this.photoList[this.currentPhotoIndex]);
     };
 
     FlickrImagesView.prototype.exitFocusedView = function() {
-        debugger;
         this.currentPhotoIndex = null;
         document.removeEventListener('mousewheel', FlickrImagesView.disableScrollEvent);
         window.onkeydown = null;
