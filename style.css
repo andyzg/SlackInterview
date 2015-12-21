@@ -8,6 +8,16 @@ body {
     width: 600px;
 }
 
+#header {
+    font-family: 'Libre Baskerville', serif;
+    text-align: center;
+}
+
+#header hr {
+    margin-bottom: 25px;
+    width: 50%;
+}
+
 .photo-thumbnail {
     background-color: white;
     background-size: contain;
