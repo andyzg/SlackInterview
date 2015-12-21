@@ -67,7 +67,10 @@ body {
 
 #photo-focus {
     height: 500px;
-    width: auto;
+}
+
+#photo-focus {
+    max-width: none;
 }
 
 #photo-footer {
@@ -98,6 +101,7 @@ body {
 .icon img {
     display: block;
     height: 24px;
+    max-width: 24px;
     margin: 0 auto;
 }
 
