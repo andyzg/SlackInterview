@@ -10,8 +10,7 @@ body {
 
 .photo-thumbnail {
     background-color: white;
-    background-position: center center;
-    background-repeat: no-repeat;
+    background-size: contain;
     cursor: pointer;
     display: inline-block;
     height: 150px;
@@ -58,6 +57,7 @@ body {
 
 #photo-focus {
     height: auto;
+    max-height: 80%;
     width: auto;
 }
 

@@ -19,7 +19,7 @@
     FlickrAPI.API_KEY = '8c1e32c8cf8aef1aa2327eaa91fc305d';
     FlickrAPI.ANDY_ZHANG_USER_ID = '136059316@N02';
     FlickrAPI.PHOTOS_METHOD = 'flickr.people.getPublicPhotos';
-    FlickrAPI.EXTRAS = ['url_s', 'url_l'];
+    FlickrAPI.EXTRAS = ['url_s', 'url_n', 'url_l'];
     FlickrAPI.REQUEST_FORMAT = 'rest'
     FlickrAPI.RESPONSE_FORMAT = 'json';
 
@@ -54,10 +54,17 @@
     };
 
     var Photo = function(photo) {
-        this.smallImageUrl = photo['url_s'];
+        var smallHeight = parseInt(photo['height_s']);
+        if (smallHeight < Photo.HEIGHT) {
+            this.smallImageUrl = photo['url_n'];
+        } else {
+            this.smallImageUrl = photo['url_s'];
+        }
         this.largeImageUrl = photo['url_l'];
         this.id = photo['id'];
     };
+
+    Photo.HEIGHT = 150;
 
     Photo.prototype.getSmallImageUrl = function() {
         return this.smallImageUrl;
@@ -195,7 +202,6 @@
         var rootDiv = document.createElement('div');
         console.log(rootDiv);
         rootDiv.style['background'] = 'url(' + photo.getSmallImageUrl() + ') no-repeat center center';
-        console.log(rootDiv);
         rootDiv.className = 'photo-thumbnail';
 
         var overlay = document.createElement('div');
