@@ -57,7 +57,7 @@ body {
 }
 
 #photo-focus-overlay {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.8);
     position: fixed;
     top: 0;
     left: 0;
@@ -74,15 +74,15 @@ body {
 .icon {
     border-radius: 50%;
     cursor: pointer;
-    height: 16px;
+    height: 24px;
     padding: 10px;
     position: fixed;
-    width: 16px;
+    width: 24px;
 }
 
 .icon img {
     display: block;
-    height: 16px;
+    height: 24px;
     margin: 0 auto;
 }
 
