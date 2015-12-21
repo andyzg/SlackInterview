@@ -60,3 +60,37 @@ body {
     height: auto;
     width: auto;
 }
+
+.icon {
+    border-radius: 50%;
+    cursor: pointer;
+    height: 16px;
+    padding: 10px;
+    position: fixed;
+    width: 16px;
+}
+
+.icon img {
+    display: block;
+    height: 16px;
+    margin: 0 auto;
+}
+
+#close-icon {
+    top: 50px;
+    right: 50px;
+}
+
+#close-icon:hover {
+    cursor: pointer;
+}
+
+#left-icon {
+    left: 50px;
+    top: 50%;
+}
+
+#right-icon {
+    right: 50px;
+    top: 50%;
+}

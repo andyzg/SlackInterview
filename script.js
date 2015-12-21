@@ -74,6 +74,8 @@
     var FlickrImagesView = function() {
         this.photoList = [];
         this.currentPhotoIndex = null;
+        this.photoRootElement = $('#photo-list')[0];
+        this.focusElement = $('#photo-focus').item(0);
     };
 
     FlickrImagesView.KEY_CODE_ESC = 27;
@@ -85,7 +87,6 @@
     };
 
     FlickrImagesView.prototype.renderImages = function(photos) {
-        var rootListElement = $('#photo-list')[0];
         this.photoList = photos.map(function(p) {
             return new Photo(p);
         });
@@ -94,25 +95,41 @@
             // to the DOM.
             var photoElement = FlickrImagesView.createPhotoElement(this.photoList[i]);
             this.setupOnclick(photoElement, i);
-            rootListElement.appendChild(photoElement);
+            this.photoRootElement.appendChild(photoElement);
         }
     };
 
     FlickrImagesView.prototype.setupOnclick = function(element, i) {
-        element.onclick = function() {
+        element.onclick = function(e) {
+            // This prevents any event handlers to be called immediately after
+            // attaching them.
+            e.stopPropagation();
+
             this.currentPhotoIndex = i;
+            this.setupEventListeners();
             this.renderFocusedView(this.currentPhotoIndex);
         }.bind(this);
     };
 
     FlickrImagesView.prototype.renderFocusedView = function(currentPhotoIndex) {
+        debugger;
         $('#photo-viewer').item(0).style.display = 'block';
-        this.setupEventListeners();
         this.setupFocusedImage(this.photoList[currentPhotoIndex].getLargeImageUrl());
     };
 
     FlickrImagesView.prototype.setupFocusedImage = function(imgUrl) {
-        $('#photo-focus').item(0).src = imgUrl;
+        this.focusElement.src = imgUrl;
+        if (this.currentPhotoIndex === 0) {
+            $('#left-icon').item(0).style.display = 'none';
+        } else {
+            $('#left-icon').item(0).style.display = 'block';
+        }
+
+        if (this.currentPhotoIndex === this.photoList.length - 1) {
+            $('#right-icon').item(0).style.display = 'none';
+        } else {
+            $('#right-icon').item(0).style.display = 'block';
+        }
     }
 
     FlickrImagesView.disableScrollEvent = function(e) {
@@ -128,24 +145,45 @@
                     this.exitFocusedView();
                     break;
                 case FlickrImagesView.KEY_CODE_LEFT:
-                    this.focusNextImage();
+                    this.focusPreviousImage();
                     break;
                 case FlickrImagesView.KEY_CODE_RIGHT:
-                    this.focusPreviousImage();
+                    this.focusNextImage();
                     break;
                 default:
                     break;
             }
         }.bind(this);
+        $('#close-icon').item(0).onclick = function() {
+            this.exitFocusedView();
+        }.bind(this);
+        $('#left-icon').item(0).onclick = function() {
+            this.focusPreviousImage();
+        }.bind(this);
+        $('#right-icon').item(0).onclick = function() {
+            this.focusNextImage();
+        }.bind(this);
+        window.onclick = function(e) {
+            if (e.target.id !== 'photo-focus') {
+                debugger;
+                this.exitFocusedView();
+            }
+        }.bind(this);
     }
+
     FlickrImagesView.prototype.focusNextImage = function() {
-        console.log('Next image');
+        this.currentPhotoIndex++;
+        this.setupFocusedImage(this.photoList[this.currentPhotoIndex].getLargeImageUrl());
     };
+
     FlickrImagesView.prototype.focusPreviousImage = function() {
-        console.log('Previous image');
+        this.currentPhotoIndex--;
+        debugger;
+        this.setupFocusedImage(this.photoList[this.currentPhotoIndex].getLargeImageUrl());
     };
 
     FlickrImagesView.prototype.exitFocusedView = function() {
+        debugger;
         this.currentPhotoIndex = null;
         document.removeEventListener('mousewheel', FlickrImagesView.disableScrollEvent);
         window.onkeydown = null;
@@ -162,9 +200,6 @@
         rootDiv.appendChild(overlay);
         return rootDiv;
     }
-
-    FlickrImagesView.prototype
-
 
     document.addEventListener('DOMContentLoaded', function() {
         var photoView = new FlickrImagesView();
