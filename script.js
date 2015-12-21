@@ -206,7 +206,6 @@
 
     FlickrImagesView.createPhotoElement = function(photo) {
         var rootDiv = document.createElement('div');
-        console.log(rootDiv);
         rootDiv.style['background'] = 'url(' + photo.getSmallImageUrl() + ') no-repeat center center';
         rootDiv.className = 'photo-thumbnail';
 

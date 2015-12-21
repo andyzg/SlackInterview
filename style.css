@@ -14,7 +14,7 @@ body {
 }
 
 #header hr {
-    margin-bottom: 25px;
+    margin: 25px auto;
     width: 50%;
 }
 
@@ -71,7 +71,6 @@ body {
 }
 
 #photo-footer {
-    background-color: rgba(0, 0, 0, 0.5);
     bottom: -40px;
     height: 30px;
     padding-top: 10px;
@@ -84,7 +83,7 @@ body {
 #photo-title {
     color: rgba(255, 255, 255, 0.7);
     font-family: 'Open Sans', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .icon {
